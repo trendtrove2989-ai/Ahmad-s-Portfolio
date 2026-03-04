@@ -1,0 +1,1904 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ahmad's Portfolio | AI & Design</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #f9fafb;
+        background-color: #020617;
+      }
+
+      /* Background Setup */
+      .background-wrapper {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      #liquid-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .overlay {
+        position: fixed;
+        inset: 0;
+        /* Increased from 0.3 to 0.6 to make the whole background darker */
+        background: rgba(0, 0, 0, 0.6); 
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Hero Section */
+      .page-content {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        text-align: center;
+      }
+
+      .hero-inner { 
+        max-width: 1200px; 
+        width: 100%;
+      }
+
+      .hero-title { 
+        font-family: 'Impact', sans-serif;
+        font-size: clamp(3.5rem, 12vw, 8.5rem); 
+        font-weight: 900; 
+        line-height: 0.9;
+        margin-bottom: 1rem; 
+        text-transform: uppercase;
+        letter-spacing: -2px;
+        color: #ffffff;
+      }
+
+      .hero-subtitle { 
+        font-size: clamp(1rem, 2.5vw, 1.8rem); 
+        color: rgb(255, 255, 255); 
+        margin-bottom: 2.5rem; 
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        font-weight: 300;
+      }
+/* Ensures the photo behaves like the video zoom effect */
+      .portfolio-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      
+      .video-frame:hover .portfolio-photo {
+        transform: scale(1.08);
+      }
+      /* About Section */
+      .about-section {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+      }
+
+      .glass-container {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px) saturate(180%);
+        -webkit-backdrop-filter: blur(15px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        max-width: 1000px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        overflow: hidden;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      }
+
+      .sidebar {
+        padding: 40px;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .profile-img-box {
+        width: 100%;
+        aspect-ratio: 1/1.2;
+        background: rgba(255, 255, 255, 0.1); 
+        border-radius: 40px 10px 40px 10px;
+        margin-bottom: 30px;
+        background-image: url('https://i.ibb.co/DDqVsJyq/Whats-App-Image-2026-03-04-at-10-11-26-PM.jpg'); 
+        background-size: cover;
+        background-position: center;
+      }
+
+      .main-content {
+        padding: 40px;
+        color: #e5e7eb;
+      }
+
+      .section-block { margin-bottom: 40px; }
+      
+      .heading {
+        font-family: 'Impact', sans-serif;
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #ffffff; 
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .heading::before {
+        content: '✦';
+        font-size: 1.5rem;
+      }
+
+      .text-body {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        opacity: 0.9;
+      }
+
+      .hr-line {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 30px 0;
+        width: 100%;
+      }
+
+      .contact-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 0.9rem;}
+      
+      .skills-grid { display: flex; gap: 15px; margin-top: 15px; }
+      .skill-icon {
+        width: 40px; height: 40px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: bold; font-size: 0.7rem;
+      }
+
+            /* Styling for images inside the Certificate Portal */
+      .cert-portal-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 2rem;
+      }
+      
+      .cert-portal-content img {
+        max-width: 90%;
+        max-height: 80vh;
+        border-radius: 12px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.2);
+      }
+      
+      .cert-title-popup {
+        margin-top: 20px;
+        font-family: 'Impact', sans-serif;
+        font-size: 2rem;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .experience-list {
+        list-style: none;
+        margin-top: 15px;
+      }
+      
+      .experience-list li {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        opacity: 0.9;
+        color: #e5e7eb;
+      }
+      
+      /* Theme-consistent bullet point */
+      .experience-list li::before {
+        content: '●';
+        position: absolute;
+        left: 0;
+        color: #ffffff;
+        font-size: 0.8rem;
+      }
+      /* SKILLS ZIG-ZAG GRAPH SECTION */
+      .skills-graph-section {
+        position: relative;
+        z-index: 2;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+      }
+      
+      .graph-container {
+        width: 100%;
+        max-width: 1000px;
+        position: relative;
+        margin-top: 50px;
+      }
+      
+      /* Black Horizontal Main Line */
+      /* Precise Horizontal Line */
+      .main-horizontal-line {
+        position: absolute;
+        top: 50%;
+        /* Centers the line between the first and last nodes */
+        left: 50px; 
+        right: 50px; 
+        height: 3px;
+        background: #ffffff;
+        transform: translateY(-50%);
+        z-index: 1;
+      }
+      
+      .nodes-wrapper {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+        height: 350px; 
+      }
+      
+      .node-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100px;
+        position: relative;
+      }
+      
+      /* Black Vertical connect lines */
+      .node-connector-line {
+        width: 3px;
+        background: #ffffff; /* Solid Black */
+        position: absolute;
+      }
+      
+      /* Realistic Glass Orb / Magnifying Effect */
+      .glass-circle {
+        width: 90px;
+        height: 90px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px) saturate(150%);
+        -webkit-backdrop-filter: blur(8px) saturate(150%);
+        
+        /* Remove old border and add glass depth */
+        border: 1px solid rgba(255, 255, 255, 0.3); 
+        border-radius: 50%;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      
+        /* This creates the inner glow and the outer soft shadow */
+        box-shadow: 
+          inset 0 4px 10px rgba(255, 255, 255, 0.4), 
+          inset 0 -4px 10px rgba(0, 0, 0, 0.2),
+          0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+      /* The expanding overlay */
+     .project-portal {
+       position: fixed;
+       z-index: 1000;
+       top: 50%;
+       left: 50%;
+       width: 0;
+       height: 0;
+       background: rgba(255, 255, 255, 0.05);
+       backdrop-filter: blur(25px) saturate(180%);
+       -webkit-backdrop-filter: blur(25px) saturate(180%);
+       border: 1px solid rgba(255, 255, 255, 0.2);
+       border-radius: 9999px; /* Start as a circle/pill */
+       opacity: 0;
+       pointer-events: none;
+       transition: all 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       overflow: hidden;
+     }
+     
+     .project-portal.active {
+       top: 0;
+       left: 0;
+       width: 100vw;
+       height: 100vh;
+       border-radius: 0;
+       opacity: 1;
+       pointer-events: all;
+     }
+     
+     /* Glass Close Button */
+     .close-portal {
+       position: absolute;
+       top: 40px;
+       right: 40px;
+       width: 60px;
+       height: 60px;
+       background: rgba(255, 255, 255, 0.1);
+       border: 1px solid rgba(255, 255, 255, 0.3);
+       border-radius: 50%;
+       cursor: pointer;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       color: white;
+       font-size: 24px;
+       box-shadow: inset 0 4px 10px rgba(255,255,255,0.2);
+       transition: transform 0.3s ease;
+     }
+     
+     .close-portal:hover {
+       transform: rotate(90deg) scale(1.1);
+     }
+      /* The Reflection Layer (The "Glass" shine) */
+      /* Realistic Glass Orb / Magnifying Effect */
+      .glass-circle {
+        width: 90px;
+        height: 90px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px) saturate(150%);
+        -webkit-backdrop-filter: blur(8px) saturate(150%);
+        
+        /* Remove old border and add glass depth */
+        border: 1px solid rgba(255, 255, 255, 0.3); 
+        border-radius: 50%;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      
+        /* This creates the inner glow and the outer soft shadow */
+        box-shadow: 
+          inset 0 4px 10px rgba(255, 255, 255, 0.4), 
+          inset 0 -4px 10px rgba(0, 0, 0, 0.2),
+          0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+      
+      /* The Reflection Layer (The "Glass" shine) */
+      .glass-circle::after {
+        content: "";
+        position: absolute;
+        top: 10%;
+        left: 15%;
+        width: 70%;
+        height: 40%;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      
+      .glass-circle img {
+        width: 65%; 
+        height: auto;
+        object-fit: contain;
+        /* This magic line turns the image white AND keeps your drop shadow */
+        filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        transition: transform 0.3s ease;
+      }
+      /* Exception for the PowerPoint logo to keep its original color */
+      .glass-circle img[alt="Power Point"] {
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); 
+      }
+      
+      /* Magnifying effect on hover */
+      .glass-circle:hover {
+        transform: scale(1.15);
+      }
+      
+      .glass-circle:hover img {
+        transform: scale(1.2); /* Makes the logo "zoom" inside the glass */
+      }
+      
+      /* UP NODES Positioning */
+      .node-up { align-self: flex-start; }
+      .node-up .node-connector-line {
+        height: 85px;
+        bottom: -85px;
+      }
+      
+      /* DOWN NODES Positioning */
+      .node-down { align-self: flex-end; }
+      .node-down .node-connector-line {
+        height: 85px;
+        top: -85px;
+      }
+      
+      /* Mobile Responsive: Stacks them vertically and hides the lines */
+      @media (max-width: 768px) {
+        .main-horizontal-line, .node-connector-line { display: none; }
+        .nodes-wrapper { height: auto; flex-direction: column; align-items: center; gap: 30px; }
+        .node-container { width: auto; align-self: center !important; }
+      }
+      /* Featured Project Video Section */
+      .video-section {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+      }
+      
+      .video-frame {
+        position: relative;
+        width: 100%;
+        max-width: 1000px;
+        aspect-ratio: 16 / 9;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      }
+      
+      .video-container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+      
+
+      
+      .video-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.4s ease;
+        z-index: 3;
+      }
+      
+
+      /* Base state for both photos and videos */
+      .video-container img.portfolio-photo,
+      .video-container video.portfolio-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        /* Added 'filter' to the transition so the blur fades in smoothly */
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
+      }
+
+      /* Hover state: Zooms in AND blurs the background */
+      .video-frame:hover .video-container img.portfolio-photo,
+      .video-frame:hover .video-container video.portfolio-video {
+        transform: scale(1.08);
+        filter: blur(8px); /* Adjust this number to make it more or less blurry */
+      }
+      .video-frame:hover .video-overlay {
+        background: rgba(0, 0, 0, 0.5);
+      }
+      
+      .video-btn {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease;
+      }
+      
+      .video-frame:hover .video-btn {
+        opacity: 1;
+        transform: translateY(0);
+      }      
+      /* --- VISUAL STORIES STACKING ANIMATION --- */
+      /* --- VISUAL STORIES STACKING ANIMATION --- */
+      /* --- VISUAL STORIES STACKING ANIMATION --- */
+      .sticky-story {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        background: transparent;
+      }
+
+      /* Prepares the frame for smooth JS shrinking and blurring */
+      .sticky-story .video-frame {
+        box-shadow: 0 -30px 60px rgba(0, 0, 0, 0.7);
+        z-index: 2;
+        will-change: transform, filter, opacity;
+        transform-origin: center center;
+      }
+      /* --- ALL POSTERS GALLERY --- */
+      
+      .stories-wrapper {
+        position: relative;
+        z-index: 2;
+      }
+      /* --- SEPARATE GALLERY VIEW --- */
+      #gallery-view {
+        display: none; /* Hidden by default */
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        flex-direction: column;
+        align-items: center;
+        padding: 4rem 2rem;
+      }
+
+      .gallery-container {
+        width: 100%;
+        max-width: 1200px;
+        margin-top: 2rem;
+      }
+
+      .posters-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on desktop */
+        gap: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .posters-grid {
+          grid-template-columns: repeat(3, 1fr); /* Kept at 3 columns for mobile */
+          gap: 10px; /* Reduced gap slightly for smaller screens */
+        }
+      }
+
+      .gallery-item {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1; /* Changed from 16/9 to 1/1 (Square) */
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0);
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.4s ease;
+        z-index: 3;
+      }
+
+      .gallery-item:hover .gallery-overlay {
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(8px); /* Blur effect on hover */
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+
+      /* --- GLASSMORPHIC BUTTONS --- */
+      .btn-primary, .expand-btn {
+        background: rgba(255, 255, 255, 0.08); /* Semi-transparent base */
+        backdrop-filter: blur(15px) saturate(180%);
+        -webkit-backdrop-filter: blur(15px) saturate(180%); /* For Safari */
+        border: 1px solid rgba(255, 255, 255, 0.25); /* Subtle glass edge */
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.3); /* Outer shadow + Inner shine */
+        color: #ffffff; /* White text for contrast */
+        border-radius: 9999px; /* Circular rectangular (pill) */
+        cursor: pointer;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+
+      /* Base padding sizes */
+      .btn-primary {
+        padding: 0.8rem 2rem;
+      }
+      .expand-btn {
+        padding: 0.8rem 1.5rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease;
+      }
+
+      /* Hover states for the glowing glass effect */
+      .btn-primary:hover, .expand-btn:hover {
+        background: rgba(255, 255, 255, 0.15); /* More visible on hover */
+        border: 1px solid rgba(255, 255, 255, 0.5); /* Brighter edge */
+        box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4), inset 0 1px 4px rgba(255, 255, 255, 0.5);
+      }
+
+      /* Fix to ensure hover animations stack correctly on visual stories */
+      .video-frame:hover .video-btn:hover {
+        transform: translateY(0) scale(1.05);
+      }
+
+      /* Re-applying gallery item hover logic */
+      .gallery-item:hover .expand-btn {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .gallery-item:hover .expand-btn:hover {
+        transform: translateY(0) scale(1.05);
+      }
+      /* --- EXPANDING IMAGE PORTAL --- */
+      /* --- EXPANDING IMAGE PORTAL --- */
+      .image-portal {
+        position: fixed;
+        z-index: 3000;
+        /* Replaced solid background with glassmorphic effect */
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(25px) saturate(180%);
+        -webkit-backdrop-filter: blur(25px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        
+        border-radius: 9999px; /* Starts as the button shape */
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .image-portal.active {
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        border-radius: 0 !important;
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .image-portal img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Shows full uncropped image */
+        opacity: 0;
+        transition: opacity 0.4s ease 0.4s; /* Fades in after expansion */
+      }
+
+      .image-portal.active img {
+        opacity: 1;
+      }
+      /* Certificates Section */
+      .cert-hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        position: relative;
+      }
+      
+      .cert-list-section {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        padding: 10vh 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      
+      .cert-item {
+        width: 100%;
+        padding: 2rem 5%;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .cert-text {
+        font-family: 'Impact', sans-serif;
+        font-size: clamp(1.5rem, 4vw, 3rem);
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.7);
+        z-index: 2;
+        transition: color 0.3s ease, transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      
+      /* The Glassmorphic Background Effect */
+      .cert-item::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px) saturate(180%);
+        -webkit-backdrop-filter: blur(15px) saturate(180%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: 1;
+      }
+      
+      .cert-item:hover::before {
+        opacity: 1;
+      }
+      
+      .cert-item:hover .cert-text {
+        color: #ffffff;
+        transform: translateX(20px);
+      }
+      
+      .cert-text span {
+        font-size: 0.8em;
+        color: #ffffff;
+      }
+      /* --- CONTACT PAGE & FLIP CARD --- */
+      .contact-page {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+      }
+
+      .flip-card-container {
+        background-color: transparent;
+        width: 100%;
+        max-width: 380px; /* Lower width */
+        height: 550px; /* Higher height */
+        perspective: 1000px; /* 3D effect */
+        margin-bottom: 3rem;
+      }
+
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+        transform-style: preserve-3d;
+      }
+
+      /* Triggered by JS */
+      /* Trigger the flip on hover instead of JS */
+      .flip-card-container:hover .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+
+      /* Styling for the small hint text */
+      .hover-hint {
+        position: absolute;
+        bottom: 30px; /* Positions it at the bottom of the frame */
+        font-size: 0.8rem;
+        color: rgb(255, 255, 255);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        
+      }
+
+      @keyframes pulseHint {
+        0% { opacity: 0.4; }
+        50% { opacity: 1; }
+        100% { opacity: 0.4; }
+      }
+
+      .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        border-radius: 24px;
+      }
+
+      /* Glassmorphic base */
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px) saturate(180%);
+        -webkit-backdrop-filter: blur(15px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      }
+
+      .flip-card-back {
+        transform: rotateY(180deg);
+        align-items: stretch;
+        justify-content: center;
+        padding: 2.5rem 2rem;
+      }
+
+      /* Form Styles */
+      .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .contact-form input, .contact-form textarea {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 12px 15px;
+        color: white;
+        font-family: inherit;
+        font-size: 1rem;
+        outline: none;
+        transition: border 0.3s ease, background 0.3s ease;
+      }
+
+      .contact-form input::placeholder, .contact-form textarea::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .contact-form input:focus, .contact-form textarea:focus {
+        border-color: rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .contact-form textarea {
+        resize: none;
+      }
+
+      /* Footer Styles */
+      .social-footer {
+        display: flex;
+        gap: 25px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        color: white;
+      }
+
+      .social-icon:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      }
+      /* --- HERO NAV FOOTER --- */
+      /* --- HERO HEADER NAV (TWO-STAGE DRAWING ANIMATION) --- */
+      .hero-header-nav {
+        position: absolute;
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 1.5rem;
+        z-index: 10;
+      }
+
+      .nav-link {
+        position: relative;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        padding: 0.8rem 1.5rem;
+        text-transform: uppercase;
+        z-index: 1;
+        /* Flex ensures the text stays perfectly centered when the box grows */
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Base State: Just the bottom line */
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0; 
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px; /* Starting line width */
+        height: 2px; /* Starting line thickness */
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 2px;
+        border: 1px solid transparent; /* Prep for the glass border */
+        z-index: -1; 
+        
+        /* MOUSE OUT ANIMATION REVERSAL */
+        /* Shrinks height and removes glass first (0.3s), THEN shrinks width back to 30px (delayed by 0.3s) */
+        transition: 
+          height 0.3s ease 0s, 
+          border-radius 0.3s ease 0s, 
+          background 0.3s ease 0s, 
+          border 0.3s ease 0s,
+          box-shadow 0.3s ease 0s,
+          width 0.2s ease 0.3s; 
+      }
+
+      /* Hover State: The Drawn Glass Pill */
+      .nav-link:hover::after {
+        width: 100%; 
+        height: 100%; 
+        border-radius: 9999px; 
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px) saturate(180%);
+        -webkit-backdrop-filter: blur(15px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
+        /* MOUSE IN ANIMATION SEQUENCE */
+        /* Width expands first (0.2s), THEN height, borders, and glass fill in (delayed by 0.2s) */
+        transition: 
+          width 0.2s ease 0s, 
+          height 0.3s ease 0.2s, 
+          border-radius 0.3s ease 0.2s, 
+          background 0.3s ease 0.2s, 
+          border 0.3s ease 0.2s,
+          box-shadow 0.3s ease 0.2s;
+      }
+
+      @media (max-width: 768px) {
+        .hero-header-nav {
+          gap: 0.5rem;
+          top: 20px; 
+        }
+        .nav-link {
+          font-size: 0.7rem;
+          padding: 0.6rem 0.8rem;
+        }
+      }
+      /* --- GLASSMORPHIC SUCCESS TOAST --- */
+      .glass-toast {
+        position: fixed;
+        bottom: -100px; /* Hidden off-screen initially */
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 15px 30px;
+        border-radius: 50px; /* Pill shape */
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        font-weight: 500;
+        letter-spacing: 1px;
+        /* Smooth, slightly bouncy animation */
+        transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+      }
+
+      .glass-toast.show {
+        bottom: 40px; /* Slides up into view */
+        opacity: 1;
+      }
+
+      .toast-icon {
+        background: rgba(16, 185, 129, 0.8); /* Soft success green */
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: bold;
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="project-portal" class="project-portal">
+      <div class="close-portal" onclick="closePortal()">✕</div>
+      <div id="portal-content" style="color: white; font-size: 2rem; font-family: 'Impact';">PROJECT DETAILS</div>
+    </div>
+    
+    <div class="background-wrapper"><canvas id="liquid-canvas"></canvas></div>
+    <div class="overlay"></div>
+
+    <div id="home-view">
+      
+      <main class="page-content" id="top">
+        <div class="hero-inner">
+          <h1 class="hero-title">Ahmad's Portfolio</h1>
+          <p class="hero-subtitle">Design Meets Profession</p>
+          <div class="hero-actions">
+            <a href="#about" class="btn-primary">View About Me</a>
+          </div>
+        </div>
+
+        <nav class="hero-header-nav">
+          <a href="#top" class="nav-link">Home</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#" class="nav-link" onclick="goToGallery(); return false;">All Work</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+      </main>
+
+      <section class="about-section" id="about">
+        <div class="glass-container">
+          <div class="sidebar">
+            <div class="profile-img-box"></div> 
+            <div class="section-block">
+              <h2 class="heading" style="font-size: 1.5rem;">Contact</h2>
+              <div class="contact-item">📞 +923022501337</div>
+              <div class="contact-item">✉️ techbirdgraphics@gmail.com</div>
+            </div>
+            <div class="section-block">
+              <h2 class="heading" style="font-size: 1.5rem;">Technical Skills</h2>
+              <div class="skills-grid">
+                <div class="skill-icon">Ps</div>
+                <div class="skill-icon">Ai</div>
+                <div class="skill-icon">Pr</div>
+                <div class="skill-icon">Cv</div>
+              </div>
+            </div>
+            <div class="section-block">
+              <h2 class="heading" style="font-size: 1.5rem;">Language</h2>
+              <p class="text-body">Urdu: Native</p>
+              <p class="text-body">English: Native</p>
+            </div>
+          </div>
+          <div class="main-content">
+            <div class="section-block">
+              <h2 class="heading">About Me</h2>
+              <p class="text-body">
+                I'm a passionate graphic designer from Pakistan (Faisalabad), driven by bold visuals and clean storytelling. 
+                I specialize in branding, digital content, and creative direction. My design process is rooted in curiosity, 
+                strategy, and intentional detail—always aiming to bring out the soul of a brand.
+              </p>
+            </div>
+            <div class="hr-line"></div>
+            <div class="section-block">
+              <h2 class="heading">Education</h2>
+              <h3 style="margin-bottom: 5px;">FAST-NUCES</h3>
+              <p class="text-body">Bachelor of Science in Artificial Intelligence - 3rd Semester</p>
+            </div>
+            <div class="hr-line"></div>
+            <div class="section-block">
+              <h2 class="heading">Experience</h2>
+              <ul class="experience-list">
+                <li>Over 2 years of experience creating digital designs, branding assets, and social media content</li>
+                <li>Designed official posters for DAIRA, a national-level event hosted by FAST-NUCES Faisalabad</li>
+                <li>Worked on various freelance projects, blending creativity with strategy to deliver impactful visuals</li>
+              </ul>
+            </div>
+          </div>      
+        </div>
+      </section>
+
+      <section class="skills-graph-section" id="skills">
+        <h2 class="hero-title" style="font-size: clamp(2rem, 8vw, 4rem); text-align: center; margin-bottom: 20px;">
+          MY SKILLS
+        </h2>
+        <div class="graph-container">
+          <div class="main-horizontal-line"></div>
+          <div class="nodes-wrapper">
+            <div class="node-container node-down">
+              <div class="glass-circle">
+                <img src="https://i.ibb.co/VYyJz57B/1.png" alt="Web Development">
+              </div>
+              <div class="node-connector-line"></div>
+            </div>
+            <div class="node-container node-up">
+              <div class="glass-circle">
+                <img src="https://i.ibb.co/rK7R0DCW/ps.png" alt="Photoshop">
+              </div>
+              <div class="node-connector-line"></div>
+            </div>
+            <div class="node-container node-down">
+              <div class="glass-circle">
+                <img src="https://i.ibb.co/LhDGsLX4/ai.png" alt="Illustrator">
+              </div>
+              <div class="node-connector-line"></div>
+            </div>
+            <div class="node-container node-up">
+              <div class="glass-circle">
+                <img src="https://i.ibb.co/Gv0DmvLh/4.png" alt="Canva">
+              </div>
+              <div class="node-connector-line"></div>
+            </div>
+            <div class="node-container node-down">
+              <div class="glass-circle">
+                <img src="https://i.ibb.co/1JTpFmK6/5.png" alt="Power Point">
+              </div>
+              <div class="node-connector-line"></div>
+            </div>
+          </div>
+        </div>
+      </section>    
+
+      <section class="page-content" id="web-folio-divider">
+        <div class="hero-inner">
+          <h1 class="hero-title">Web Folio</h1>
+        </div>
+      </section>
+
+      <section class="video-section" id="trend-trove">
+        <h2 class="hero-title" style="font-size: clamp(2rem, 8vw, 4rem); text-align: center; margin-bottom: 40px;">
+          Trend Trove
+        </h2>
+        <div class="video-frame">
+          <div class="video-container">
+            <video autoplay muted loop playsinline class="portfolio-video">
+              <source src="1.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay">
+              <a href="https://trend-trove.pages.dev" target="_blank" class="btn-primary video-btn">
+                Visit Website
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="video-section" id="riventa-holdings">
+        <h2 class="hero-title" style="font-size: clamp(2rem, 8vw, 4rem); text-align: center; margin-bottom: 40px;">
+          RIVENTA HOLDINGS
+        </h2>
+        <div class="video-frame">
+          <div class="video-container">
+            <video autoplay muted loop playsinline class="portfolio-video">
+              <source src="2.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay">
+              <a href="https://raventa-holdings.pages.dev" target="_blank" class="btn-primary video-btn">
+                Visit Website
+              </a>
+            </div>
+          </div>
+        </div>
+      </section> 
+
+      <div class="stories-wrapper">
+        <section class="page-content" id="web-folio-divider">
+          <div class="hero-inner">
+            <h1 class="hero-title">Visual Stories</h1>
+          </div>
+        </section>
+        <section class="video-section sticky-story">
+          <div class="video-frame">
+            <div class="video-container">
+              <img src="https://i.ibb.co/p6kBD0hb/Chat-GPT-Image-Mar-3-2026-05-12-53-PM.png" class="portfolio-photo">
+              <div class="video-overlay">
+                <a href="#" class="btn-primary video-btn" onclick="expandImage(event, 'https://i.ibb.co/YC9FRCP/p1.png')">View Project</a>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="video-section sticky-story">
+          <div class="video-frame">
+            <div class="video-container">
+              <img src="https://i.ibb.co/WNcyRW4L/Gemini-Generated-Image-gtvmqogtvmqogtvm.png" class="portfolio-photo">
+              <div class="video-overlay">
+                <a href="#" class="btn-primary video-btn" onclick="expandImage(event, 'https://i.ibb.co/wNHs66Qp/4.png')">View Project</a>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="video-section sticky-story">
+          <div class="video-frame">
+            <div class="video-container">
+              <img src="https://i.ibb.co/mCGxgL3K/Chat-GPT-Image-Mar-3-2026-05-11-43-PM.png" class="portfolio-photo">
+              <div class="video-overlay">
+                <a href="#" class="btn-primary video-btn" onclick="expandImage(event, 'https://i.ibb.co/WWLbzHDC/9.png')">View Project</a>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="video-section sticky-story">
+          <div class="video-frame">
+            <div class="video-container">
+              <img src="https://i.ibb.co/zWXwQ8L4/Chat-GPT-Image-Mar-3-2026-05-14-22-PM.png" class="portfolio-photo">
+              <div class="video-overlay">
+                <a href="#" class="btn-primary video-btn" onclick="expandImage(event, 'https://i.ibb.co/RpxW0JV3/1.png')">View Project</a>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="video-section sticky-story">
+          <div class="video-frame">
+            <div class="video-container">
+              <img src="https://i.ibb.co/HDH3hhyn/Chat-GPT-Image-Mar-3-2026-05-09-59-PM.png" class="portfolio-photo">
+              <div class="video-overlay">
+                <a href="#" class="btn-primary video-btn" onclick="expandImage(event, 'https://i.ibb.co/b50FXdpB/1.png')">View Project</a>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="video-section sticky-story">
+          <div class="video-frame">
+            <div class="video-container">
+              <img src="https://i.ibb.co/JF5gQ0Tg/Chat-GPT-Image-Mar-3-2026-05-10-20-PM.png" class="portfolio-photo">
+              <div class="video-overlay">
+                <a href="#" class="btn-primary video-btn" onclick="expandImage(event, 'https://i.ibb.co/21L7ccds/CHESS.png')">View Project</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="page-content" id="view-all-section" style="min-height: 50vh;">
+        <div class="hero-inner">
+          <button class="btn-primary" style="font-size: 1.5rem; padding: 1.5rem 3rem;" onclick="goToGallery()">View All Posters</button>
+        </div>
+      </section>
+      <section class="cert-list-section" id="certificates">
+        <div style="text-align: center; margin-bottom: 3rem;">
+          <h2 class="hero-title" style="font-size: clamp(2.5rem, 8vw, 5rem);">CERTIFICATES</h2>
+        </div>
+        
+        <div class="cert-item" onclick="expandCert(event, 'https://i.ibb.co/RTLcqv7F/3.png', 'Daira certificate 2024')">
+          <div class="cert-text"><span>▶</span> Daira certificate 2024</div>
+        </div>
+        
+        <div class="cert-item" onclick="expandCert(event, 'https://i.ibb.co/3GDnX72/Colorful-Modern-Geometric-Certificate-of-Participation.png', 'Democrates certificate 2025')">
+          <div class="cert-text"><span>▶</span> Democrates certificate 2025</div>
+        </div>
+        
+        <div class="cert-item" onclick="expandCert(event, 'https://i.ibb.co/xtn5Fptk/2.png', 'SGS society graphic Co-head 2025')">
+          <div class="cert-text"><span>▶</span> SGS society graphic Co-head 2025</div>
+        </div>
+        
+        <div class="cert-item" onclick="expandCert(event, 'https://i.ibb.co/b5rGGV58/4.png', 'SGS society graphic Co-head 2026')">
+          <div class="cert-text"><span>▶</span> SGS society graphic Co-head 2026</div>
+        </div>
+      </section>
+      <section class="contact-page" id="contact">
+        <div class="flip-card-container">
+          <div class="flip-card-inner" id="contact-flip-card">
+            
+            <div class="flip-card-front glass-panel">
+              <h3 class="hero-subtitle" style="margin: 0;">Let's Work Together</h3>
+              <div class="hover-hint">Move the cursor here</div>
+            </div>
+            
+            <div class="flip-card-back glass-panel">
+              <h2 class="heading" style="font-size: 1.8rem; justify-content: center;">Contact Me</h2>
+              <form id="contact-form" class="contact-form">
+                <input type="text" name="user_name" placeholder="Your Full Name" required />
+                <input type="email" name="user_email" placeholder="Your Email" required />
+                <textarea name="message" placeholder="Message" rows="6" required></textarea>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px; border-radius: 12px;">Send Msg</button>
+              </form>
+            </div>
+            
+          </div>
+        </div>
+
+        <footer class="social-footer">
+          <a href="https://wa.me/923022501337" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/ahmad_thedesigner_?igsh=MTNvejMwdHNnMnFqMQ==" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+          <a href="https://github.com/trendtrove2989-ai" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          </a>
+          <a href="mailto:trendtrove2989@gmail.com" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+        </footer>
+      </section>
+    </div> 
+    <div id="gallery-view">
+      <div style="width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 class="hero-title" style="font-size: clamp(2rem, 6vw, 4rem); margin: 0;">All Visual Stories</h2>
+        <button class="btn-primary" style="position: fixed; bottom: 40px; right: 40px; z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.8);" onclick="goToHome()">← Back</button>
+      </div>
+
+      <div class="gallery-container">
+        <div class="posters-grid">
+          
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/JJHvR2H/variation-in-day-6-mockup-poster.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/JJHvR2H/variation-in-day-6-mockup-poster.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/FkkzS7qf/work-day-5.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/FkkzS7qf/work-day-5.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/H3rGW49/2.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/H3rGW49/2.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/b50FXdpB/1.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/b50FXdpB/1.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/gnP9V0d/2.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/gnP9V0d/2.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/9kRz5ssK/1.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/9kRz5ssK/1.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/GfssT4mN/2.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/GfssT4mN/2.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/jvm3vsCG/7.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/jvm3vsCG/7.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/WWLbzHDC/9.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/WWLbzHDC/9.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/0PmK1WT/variation-in-day-6-icon-s-poster.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/0PmK1WT/variation-in-day-6-icon-s-poster.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/DPZJLvcN/poster-with-icons.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/DPZJLvcN/poster-with-icons.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/WvNpK4Bs/illustration-poster.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/WvNpK4Bs/illustration-poster.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/KJMNMKH/8.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/KJMNMKH/8.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/T5mN8c0/10.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/T5mN8c0/10.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/nMG3qG6X/6.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/nMG3qG6X/6.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/j9Crk57d/5.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/j9Crk57d/5.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/nXLDWMT/1.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/nXLDWMT/1.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/7NtmcxXq/2.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/7NtmcxXq/2.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/ynCMYMfs/3.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/ynCMYMfs/3.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/zhDqDnZ1/4.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/zhDqDnZ1/4.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/d0gfWTh3/9.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/d0gfWTh3/9.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/XfNKd0sK/8.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/XfNKd0sK/8.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/Ld0sVQfq/10.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/Ld0sVQfq/10.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/v4Dpz5Pq/6.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/v4Dpz5Pq/6.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/FkN1VNDW/5.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/FkN1VNDW/5.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/dsdJs4x8/7.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/dsdJs4x8/7.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/0R8RZyPC/1.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/0R8RZyPC/1.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/Y4Jrypmq/3.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/Y4Jrypmq/3.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/DgsC5q6m/2.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/DgsC5q6m/2.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/mCr1NKzs/9.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/mCr1NKzs/9.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/v48nJ1fQ/8.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/v48nJ1fQ/8.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/C5DHsRNx/10.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/C5DHsRNx/10.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/HpK0dCnz/6.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/HpK0dCnz/6.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/nNfTcGsZ/5.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/nNfTcGsZ/5.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/605Vqc8Q/7.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/605Vqc8Q/7.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/m5V2GKbY/1.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/m5V2GKbY/1.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/jXXRN75/2.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/jXXRN75/2.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/nN2hSJm1/3.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/nN2hSJm1/3.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/PG745Yb0/4.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/PG745Yb0/4.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/Wvzj08P4/2.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/Wvzj08P4/2.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/RpxW0JV3/1.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/RpxW0JV3/1.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/ynknwvhQ/1.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/ynknwvhQ/1.png')">Show Full Screen</button>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://i.ibb.co/rR78bHn2/3.png" class="portfolio-photo">
+            <div class="gallery-overlay">
+              <button class="expand-btn" onclick="expandImage(event, 'https://i.ibb.co/rR78bHn2/3.png')">Show Full Screen</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div id="image-portal" class="image-portal">
+      <div class="close-portal" style="position: absolute;" onclick="closeImagePortal()">✕</div>
+      <img id="portal-expanded-img" src="" alt="Expanded View">
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <div id="success-toast" class="glass-toast">
+      <div class="toast-icon">✓</div>
+      <span>Message sent successfully!</span>
+    </div>
+    <div id="error-toast" class="glass-toast">
+      <div class="toast-icon" style="background: rgba(239, 68, 68, 0.8); box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);">✕</div>
+      <span>Failed to send. Please check your connection!</span>
+    </div>
+    <script type="text/javascript">
+      // 1. Initialize EmailJS with your Public Key
+      // REPLACE 'YOUR_PUBLIC_KEY' WITH YOUR ACTUAL KEY
+      emailjs.init("JuFUzZjaUHQjrAQXd");
+
+      // 2. Handle the Form Submission
+      // 2. Handle the Form Submission
+      document.getElementById('contact-form').addEventListener('submit', function(event) {
+          event.preventDefault(); // Stop page from reloading
+
+          const btn = this.querySelector('button[type="submit"]');
+          const originalText = btn.innerText;
+          const toast = document.getElementById('success-toast'); // Get the toast element
+          
+          btn.innerText = 'Sending...'; 
+
+          // 3. Send the form data using your specific IDs
+          emailjs.sendForm('service_mn6uok5', 'template_9bspz8m', this)
+              .then(function() {
+                  console.log('SUCCESS!');
+                  btn.innerText = originalText; // Reset button text immediately
+                  document.getElementById('contact-form').reset(); // Clear the form
+                  
+                  // Show the glassmorphic toast
+                  toast.classList.add('show');
+                  
+                  // Hide the toast after 4 seconds
+                  setTimeout(() => { 
+                      toast.classList.remove('show'); 
+                  }, 4000); 
+                  
+              }, function(error) {
+                  console.log('FAILED...', error);
+                  btn.innerText = 'Failed to Send';
+                  
+                  // Reset button text after 3 seconds
+                  setTimeout(() => { btn.innerText = originalText; }, 3000);
+              });
+      });
+    </script>
+    <script type="module">
+      import LiquidBackground from "https://cdn.jsdelivr.net/npm/threejs-components@0.0.22/build/backgrounds/liquid1.min.js";
+      
+      const canvas = document.getElementById("liquid-canvas");
+      if (canvas) {
+        const app = LiquidBackground(canvas);
+        app.loadImage("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee");
+        app.liquidPlane.material.metalness = 0.8;
+        app.liquidPlane.material.roughness = 0.2;
+        app.liquidPlane.uniforms.displacementScale.value = 4;
+        app.setRain(false);
+      }
+    
+      window.openProject = function(event) {
+          event.preventDefault();
+          const portal = document.getElementById('project-portal');
+          const rect = event.target.getBoundingClientRect();
+          
+          portal.classList.remove('active');
+          portal.style.transition = 'none';
+          
+          portal.style.top = rect.top + 'px';
+          portal.style.left = rect.left + 'px';
+          portal.style.width = rect.width + 'px';
+          portal.style.height = rect.height + 'px';
+          portal.style.borderRadius = '9999px';
+          portal.style.opacity = '0';
+      
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              portal.style.transition = 'all 0.8s cubic-bezier(0.85, 0, 0.15, 1)';
+              portal.classList.add('active');
+              portal.style.top = '0';
+              portal.style.left = '0';
+              portal.style.width = '100vw';
+              portal.style.height = '100vh';
+              portal.style.borderRadius = '0';
+              portal.style.opacity = '1';
+            });
+          });
+        }
+      
+        window.closePortal = function() {
+          const portal = document.getElementById('project-portal');
+          portal.classList.remove('active');
+          portal.style.opacity = '0';
+      
+          setTimeout(() => {
+            portal.style.width = '0';
+            portal.style.height = '0';
+          }, 800);
+        }
+
+      // --- SEPARATE PAGE NAVIGATION LOGIC ---
+      // 1. Create a variable to remember the scroll position
+      let savedScrollPosition = 0;
+
+      // --- SEPARATE PAGE NAVIGATION LOGIC ---
+      window.goToGallery = function() {
+        // 2. Save the exact spot you are at before hiding the home page
+        savedScrollPosition = window.scrollY;
+        
+        document.getElementById('home-view').style.display = 'none';
+        document.getElementById('gallery-view').style.display = 'flex';
+        window.scrollTo(0, 0); 
+      }
+
+      window.goToHome = function() {
+        document.getElementById('gallery-view').style.display = 'none';
+        document.getElementById('home-view').style.display = 'block';
+        
+        // 3. Instead of scrolling to (0, 0), scroll back to the saved position
+        window.scrollTo(0, savedScrollPosition);
+      }
+      window.expandCert = function(event, imageSrc, title) {
+          event.preventDefault();
+          const portal = document.getElementById('image-portal');
+          const expandedImg = document.getElementById('portal-expanded-img');
+          
+          // Create or find a title element inside the portal
+          let titleEl = document.getElementById('portal-cert-title');
+          if (!titleEl) {
+              titleEl = document.createElement('div');
+              titleEl.id = 'portal-cert-title';
+              titleEl.className = 'cert-title-popup';
+              portal.appendChild(titleEl);
+          }
+          
+          // Get the position of the clicked certificate item
+          const rect = event.currentTarget.getBoundingClientRect();
+          
+          expandedImg.src = imageSrc;
+          titleEl.innerText = title;
+      
+          // Reset portal to the item's position
+          portal.classList.remove('active');
+          portal.style.transition = 'none';
+          portal.style.top = rect.top + 'px';
+          portal.style.left = rect.left + 'px';
+          portal.style.width = rect.width + 'px';
+          portal.style.height = rect.height + 'px';
+          portal.style.borderRadius = '24px'; // Match your cert-item feel
+          portal.style.opacity = '1';
+      
+          // Trigger expansion
+          requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                  portal.style.transition = 'all 0.8s cubic-bezier(0.85, 0, 0.15, 1)';
+                  portal.classList.add('active');
+                  portal.style.top = '0';
+                  portal.style.left = '0';
+                  portal.style.width = '100vw';
+                  portal.style.height = '100vh';
+                  portal.style.borderRadius = '0';
+              });
+          });
+      }
+      window.expandImage = function(event, imageSrc) {
+        event.preventDefault();
+        const portal = document.getElementById('image-portal');
+        const expandedImg = document.getElementById('portal-expanded-img');
+        const btnRect = event.target.getBoundingClientRect();
+        
+        expandedImg.src = imageSrc;
+
+        portal.classList.remove('active');
+        portal.style.transition = 'none';
+        portal.style.top = btnRect.top + 'px';
+        portal.style.left = btnRect.left + 'px';
+        portal.style.width = btnRect.width + 'px';
+        portal.style.height = btnRect.height + 'px';
+        portal.style.borderRadius = '9999px';
+        portal.style.opacity = '1';
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            // Changed from 0.6s to 0.8s to match your project portal
+            portal.style.transition = 'all 0.8s cubic-bezier(0.85, 0, 0.15, 1)';
+            portal.classList.add('active');
+          });
+        });
+      }
+
+      window.closeImagePortal = function() {
+        const portal = document.getElementById('image-portal');
+        const expandedImg = document.getElementById('portal-expanded-img');
+        const titleEl = document.getElementById('portal-cert-title');
+
+        // 1. Fade out the image and title quickly before the "walls" close
+        // so they don't look squished during the animation
+        expandedImg.style.transition = 'opacity 0.2s ease';
+        expandedImg.style.opacity = '0';
+        if (titleEl) {
+            titleEl.style.transition = 'opacity 0.2s ease';
+            titleEl.style.opacity = '0';
+        }
+
+        // 2. Force the portal to collapse to the vertical center of the screen
+        portal.style.top = '50vh';
+        portal.style.height = '0px';
+        portal.style.left = '0vw';
+        portal.style.width = '100vw';
+        portal.style.borderRadius = '0px';
+        
+        // 3. Remove the active class to trigger the smooth shrinking animation
+        portal.classList.remove('active');
+        portal.style.opacity = '0';
+
+        // 4. Cleanup and reset everything after the animation finishes (0.8s)
+        setTimeout(() => {
+          portal.style.width = '0';
+          portal.style.height = '0';
+          expandedImg.src = '';
+          
+          // Restore original transitions for the next time it opens
+          expandedImg.style.transition = 'opacity 0.4s ease 0.4s';
+          expandedImg.style.opacity = '';
+          if (titleEl) {
+              titleEl.style.transition = '';
+              titleEl.style.opacity = '';
+          }
+        }, 800);
+      }
+
+      const stories = document.querySelectorAll('.sticky-story');
+      
+      function updateStoryAnimations() {
+        const windowHeight = window.innerHeight;
+        
+        stories.forEach((story, index) => {
+          const frame = story.querySelector('.video-frame');
+          
+          if (index < stories.length - 1) {
+            const nextStory = stories[index + 1];
+            const nextRect = nextStory.getBoundingClientRect();
+            
+            if (nextRect.top <= windowHeight && nextRect.top >= 0) {
+              const progress = 1 - (nextRect.top / windowHeight);
+              
+              const scale = 1 - (progress * 0.1); 
+              const blur = progress * 15;        
+              const opacity = 1 - (progress * 0.4); 
+              
+              frame.style.transform = `scale(${scale})`;
+              frame.style.filter = `blur(${blur}px)`;
+              frame.style.opacity = opacity;
+            } 
+            else if (nextRect.top < 0) {
+              frame.style.transform = `scale(0.9)`;
+              frame.style.filter = `blur(15px)`;
+              frame.style.opacity = 0.6;
+            } 
+            else {
+              frame.style.transform = `scale(1)`;
+              frame.style.filter = `blur(0px)`;
+              frame.style.opacity = 1;
+            }
+          }
+        });
+      }
+
+      let isScrolling = false;
+      window.addEventListener('scroll', () => {
+        if (!isScrolling) {
+          window.requestAnimationFrame(() => {
+            updateStoryAnimations();
+            isScrolling = false;
+          });
+          isScrolling = true;
+        }
+      });
+      updateStoryAnimations();
+    </script>
+  </body>
+</html>
+
